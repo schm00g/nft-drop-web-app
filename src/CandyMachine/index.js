@@ -382,7 +382,7 @@ const CandyMachine = ({ walletAddress }) => {
         >
           Mint NFT
         </button>
-        {/* If we have mints available in our array, let's render some items */}
+        {isLoadingMints && <p>LOADING MINTS...</p>}
         {mints.length > 0 && renderMintedItems()}
       </div>
     )
