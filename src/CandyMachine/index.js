@@ -205,6 +205,8 @@ const CandyMachine = ({ walletAddress }) => {
             const { result } = notification;
             if (!result.err) {
               console.log('NFT Minted!');
+              setIsMinting(false);
+              await getCandyMachineState();     
             }
           }
         },
@@ -367,8 +369,13 @@ const CandyMachine = ({ walletAddress }) => {
       <div className="machine-container">
         <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>
         <p>{`Items Minted: ${machineStats.itemsRedeemed} / ${machineStats.itemsAvailable}`}</p>
-        <button className="cta-button mint-button" onClick={mintToken}>
-            Mint NFT
+        <button
+          className="cta-button mint-button"
+          onClick={mintToken}
+          // Add this disabled state and have it listen to isMinting
+          disabled={isMinting}
+        >
+          Mint NFT
         </button>
         {/* If we have mints available in our array, let's render some items */}
         {mints.length > 0 && renderMintedItems()}
