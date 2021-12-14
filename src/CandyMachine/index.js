@@ -30,6 +30,10 @@ const CandyMachine = ({ walletAddress }) => {
 
   // New state property
   const [mints, setMints] = useState([]);
+
+  // Loading
+  const [isMinting, setIsMinting] = useState(false);
+  const [isLoadingMints, setIsLoadingMints] = useState(false);
   
   // Actions
   const fetchHashTable = async (hash, metadataEnabled) => {
@@ -115,6 +119,8 @@ const CandyMachine = ({ walletAddress }) => {
 
   const mintToken = async () => {
     try {
+      // Add this here
+      setIsMinting(true);
       const mint = web3.Keypair.generate();
       const token = await getTokenWallet(
         walletAddress.publicKey,
@@ -206,6 +212,8 @@ const CandyMachine = ({ walletAddress }) => {
       );
     } catch (error) {
       let message = error.msg || 'Minting failed! Please try again!';
+
+      setIsMinting(false);
 
       if (!error.msg) {
         if (error.message.indexOf('0x138')) {
