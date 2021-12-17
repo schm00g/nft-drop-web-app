@@ -27,7 +27,7 @@ const MAX_CREATOR_LEN = 32 + 1 + 1;
 
 const CandyMachine = ({ walletAddress }) => {
   // State
-  const [machineStats, setMachineStats] = useState(null);
+  const [machineStats, setMachineStats, setTimerString] = useState(null);
 
   // New state property
   const [mints, setMints] = useState([]);
@@ -267,44 +267,22 @@ const CandyMachine = ({ walletAddress }) => {
     });
   };
 
-  useEffect(() => {
-    getCandyMachineState();
-  }, []);
+  // Create render function
+  const renderDropTimer = () => {
+    // Get the current date and dropDate in a JavaScript Date object
+    const currentDate = new Date();
+    const dropDate = new Date(machineStats.goLiveData * 1000);
 
-  // Our useEffect will run on component load
-  useEffect(() => {
-    console.log('Setting interval...');
+    // If currentDate is before dropDate, render our Countdown component
+    if (currentDate < dropDate) {
+      console.log('Before drop date!');
+      // Don't forget to pass over your dropDate!
+      return <CountdownTimer dropDate={dropDate} />;
+    }
 
-    // Use setInterval to run this piece of code every second
-    const interval = setInterval(() => {
-      const currentDate = new Date().getTime();
-      const distance = dropDate - currentDate;
-
-      // Here it's as easy as doing some time math to get the different properties
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor(
-        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-      );
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      // We have our desired output, set it in state!
-      setTimerString(`${days}d ${hours}h ${minutes}m ${seconds}s`);
-
-      // If our distance passes zero this means that it's drop time!
-      if (distance < 0) {
-        console.log('Clearing interval...');
-        clearInterval(interval);
-      }
-    }, 1000);
-
-    // Anytime our component unmounts let's clean up our interval
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, []);
+    // Else let's just return the current drop date
+    return <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>;
+  };
 
   const getProvider = () => {
     const rpcHost = process.env.REACT_APP_SOLANA_RPC_HOST;
@@ -403,23 +381,6 @@ const CandyMachine = ({ walletAddress }) => {
       </div>
     </div>
   );
-
-  // Create render function
-  const renderDropTimer = () => {
-    // Get the current date and dropDate in a JavaScript Date object
-    const currentDate = new Date();
-    const dropDate = new Date(machineStats.goLiveData * 1000);
-
-    // If currentDate is before dropDate, render our Countdown component
-    if (currentDate < dropDate) {
-      console.log('Before drop date!');
-      // Don't forget to pass over your dropDate!
-      return <CountdownTimer dropDate={dropDate} />;
-    }
-
-    // Else let's just return the current drop date
-    return <p>{`Drop Date: ${machineStats.goLiveDateTimeString}`}</p>;
-  };
 
   return (  
     // Only show this if machineStats is available
