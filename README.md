@@ -15,6 +15,3 @@ To set count down timer, run:
 If you use VSCode to build your app, we included a list of suggested extensions that will help you build this project! Once you open this project in VSCode, you will see a popup asking if you want to download the recommended extensions :).
 
 <img src="https://github.com/schm00g/nft-drop-web-app/blob/main/nft-drop-ui.png">
-
-<iframe style="border: 1px solid rgba(0, 0, 0, 0.1);" width="800" height="450" src="https://www.figma.com/embed?embed_host=share&url=https%3A%2F%2Fwww.figma.com%2Ffile%2F6CR08pj1l4489M913bE3QX%2FFuture-Scapes%3Fnode-id%3D0%253A1" allowfullscreen></iframe>
-
